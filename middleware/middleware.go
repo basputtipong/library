@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"github.com/spf13/viper"
 )
 
 func JWTMiddleware() gin.HandlerFunc {
@@ -20,14 +19,7 @@ func JWTMiddleware() gin.HandlerFunc {
 
 		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
 
-		cfgPublicKey := viper.GetString("internal.public.key")
-		if cfgPublicKey == "" {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "public key not found in config"})
-			c.Abort()
-			return
-		}
-
-		publicKeyData := []byte(cfgPublicKey)
+		publicKeyData := []byte(internalPublicKey)
 		publicKey, err := jwt.ParseRSAPublicKeyFromPEM(publicKeyData)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid public key"})

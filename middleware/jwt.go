@@ -1,11 +1,9 @@
 package libmiddleware
 
 import (
-	"errors"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/spf13/viper"
 )
 
 type CustomClaims struct {
@@ -14,12 +12,7 @@ type CustomClaims struct {
 }
 
 func GenerateJWT(userID string) (string, error) {
-	cfgPrivateKey := viper.GetString("internal.private.key")
-	if cfgPrivateKey == "" {
-		return "", errors.New("private key not found in config")
-	}
-
-	privateKeyData := []byte(cfgPrivateKey)
+	privateKeyData := []byte(internalPrivateKey)
 	privateKey, err := jwt.ParseRSAPrivateKeyFromPEM(privateKeyData)
 	if err != nil {
 		return "", err
