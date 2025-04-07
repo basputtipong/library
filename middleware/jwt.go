@@ -22,7 +22,7 @@ func GenerateJWT(userID string) (string, error) {
 		UserID: userID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-			Issuer:    "authenticator",
+			Issuer:    "https://github.com/basputtipong/library",
 		},
 	}
 
