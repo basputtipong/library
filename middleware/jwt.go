@@ -6,12 +6,13 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-type CustomClaims struct {
-	UserID string `json:"user_id"`
-	jwt.RegisteredClaims
+type jwtGen struct{}
+
+func NewJWTGenerator() JWTGenerator {
+	return &jwtGen{}
 }
 
-func GenerateJWT(userID string) (string, error) {
+func (g *jwtGen) Generate(userID string) (string, error) {
 	privateKeyData := []byte(internalPrivateKey)
 	privateKey, err := jwt.ParseRSAPrivateKeyFromPEM(privateKeyData)
 	if err != nil {
