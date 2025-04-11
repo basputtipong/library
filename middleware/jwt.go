@@ -13,12 +13,6 @@ func NewJWTGenerator() JWTGenerator {
 }
 
 func (g *jwtGen) Generate(userID string) (string, error) {
-	privateKeyData := []byte(internalPrivateKey)
-	privateKey, err := jwt.ParseRSAPrivateKeyFromPEM(privateKeyData)
-	if err != nil {
-		return "", err
-	}
-
 	claims := CustomClaims{
 		UserID: userID,
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -28,5 +22,5 @@ func (g *jwtGen) Generate(userID string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
-	return token.SignedString(privateKey)
+	return token.SignedString(rsaPrivateKey)
 }
